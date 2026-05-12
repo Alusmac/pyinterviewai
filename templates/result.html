@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>{{ question }}</h2>
+
+<p><b>Your answer:</b> {{ answer }}</p>
+
+<p><b>Score:</b> {{ score }}</p>
+<p><b>Level:</b> {{ level }}</p>
+{% endblock %}
+
+{% block ai %}
+<div>
+    <pre>{{ feedback }}</pre>
+</div>
+{% endblock %}

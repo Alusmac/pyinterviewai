@@ -1,0 +1,19 @@
+<div style="display:flex;">
+
+  <!-- LEFT SIDE -->
+  <div style="flex:2;">
+    {% block content %}{% endblock %}
+  </div>
+
+  <!-- RIGHT SIDE (AI PANEL) -->
+  <div style="flex:1; border-left:1px solid #ddd; padding:10px;">
+    <h3>AI Assistant</h3>
+
+    <div id="ai-box">
+      {% block ai %}
+      <p>Ask a question to see AI feedback</p>
+      {% endblock %}
+    </div>
+  </div>
+
+</div>
