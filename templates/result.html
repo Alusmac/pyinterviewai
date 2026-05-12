@@ -1,16 +1,138 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>{{ question }}</h2>
+<style>
+    .result-container {
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 20px;
+    }
 
-<p><b>Your answer:</b> {{ answer }}</p>
+    .result-card {
+        background: rgba(31, 41, 55, 0.3);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 24px;
+        padding: 40px;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    }
 
-<p><b>Score:</b> {{ score }}</p>
-<p><b>Level:</b> {{ level }}</p>
-{% endblock %}
+    .score-circle {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background: rgba(56, 189, 248, 0.1);
+        border: 2px solid #38bdf8;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
 
-{% block ai %}
-<div>
-    <pre>{{ feedback }}</pre>
+    .score-value {
+        font-size: 32px;
+        font-weight: 800;
+        color: #38bdf8;
+        line-height: 1;
+    }
+
+    .score-label {
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #9ca3af;
+    }
+
+    .result-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 30px;
+    }
+
+    .badge {
+        padding: 6px 14px;
+        border-radius: 10px;
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+
+    .badge-level { background: rgba(56, 189, 248, 0.1); color: #38bdf8; }
+
+    .section-title {
+        font-size: 14px;
+        font-weight: 700;
+        color: #9ca3af;
+        text-transform: uppercase;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .content-box {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 16px;
+        padding: 20px;
+        margin-bottom: 25px;
+        line-height: 1.6;
+        color: #d1d5db;
+        white-space: pre-wrap; /* Щоб зберегти форматування коду */
+        font-family: 'Inter', sans-serif;
+    }
+
+    .code-font {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 14px;
+    }
+
+    .btn-home {
+        display: inline-block;
+        background: #38bdf8;
+        color: #030712;
+        text-decoration: none;
+        padding: 14px 30px;
+        border-radius: 12px;
+        font-weight: 700;
+        transition: 0.3s;
+    }
+
+    .btn-home:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(56, 189, 248, 0.4);
+    }
+</style>
+
+<div class="result-container">
+    <div class="result-card">
+        <div class="result-header">
+            <div>
+                <div class="score-circle">
+                    <span class="score-value">{{ score }}</span>
+                    <span class="score-label">Score</span>
+                </div>
+                <span class="badge badge-level">{{ level }}</span>
+            </div>
+            <a href="/" class="btn-home">Back to Questions</a>
+        </div>
+
+        <h2 style="margin-bottom: 30px; background: linear-gradient(to right, #fff, #9ca3af); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+            {{ question }}
+        </h2>
+
+        <div class="section-title"><span>📝</span> Your Answer</div>
+        <div class="content-box code-font">{{ answer }}</div>
+
+        <div class="section-title"><span>✦</span> AI Feedback & Solution</div>
+        <div class="content-box">{{ feedback }}</div>
+
+        {% if improvement %}
+        <div class="section-title"><span>🚀</span> How to Improve</div>
+        <div class="content-box" style="border-left: 3px solid #38bdf8;">{{ improvement }}</div>
+        {% endif %}
+    </div>
 </div>
 {% endblock %}

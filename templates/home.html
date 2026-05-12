@@ -2,331 +2,393 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>PyInterview AI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PyInterview AI | Dashboard</title>
+
+    <!-- Шрифти: Inter для інтерфейсу та JetBrains Mono для коду -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
 
     <style>
+        :root {
+            --bg: #030712;
+            --sidebar-bg: rgba(17, 24, 39, 0.85);
+            --card-bg: rgba(31, 41, 55, 0.3);
+            --border: rgba(255, 255, 255, 0.08);
+            --text: #f9fafb;
+            --muted: #9ca3af;
+            --accent: #38bdf8;
+            --accent-glow: rgba(56, 189, 248, 0.3);
+            --success: #10b981;
+            --error: #ef4444;
+            --glass: rgba(255, 255, 255, 0.03);
+        }
+
+        * { box-sizing: border-box; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+
         body {
             margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #1e1e1e;
-            color: #eaeaea;
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            background-image:
+                radial-gradient(circle at 0% 0%, rgba(56, 189, 248, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 100% 100%, rgba(79, 70, 229, 0.08) 0%, transparent 40%);
+            color: var(--text);
+            overflow-x: hidden;
         }
 
-        .page {
+        .page-wrapper {
             display: flex;
-            max-width: 1200px;
-            margin: 0 auto;
+            max-width: 1600px;
+            margin: auto;
+            min-height: 100vh;
         }
 
-        .container {
+        /* --- ГОЛОВНИЙ КОНТЕНТ --- */
+        .main-content {
             flex: 2;
-            padding: 40px 20px;
-        }
-
-        .ai-sidebar {
-            flex: 1;
-            border-left: 1px solid #333;
-            padding: 20px;
-            position: sticky;
-            top: 0;
-            height: 100vh;
-            background-color: #181818;
+            padding: 40px 50px;
         }
 
         h1 {
-            text-align: center;
-            margin-bottom: 20px;
+            font-size: 2.2rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 30px;
+            background: linear-gradient(to bottom right, #fff 40%, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .welcome {
-            text-align: center;
-            color: #aaa;
-            margin-bottom: 20px;
-        }
-
-        /* SCORE CARD */
-        .score-wrapper {
+        /* --- ДАШБОРД ПРОГРЕСУ --- */
+        .score-dashboard {
             display: flex;
-            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            padding: 25px;
+            border-radius: 24px;
+            margin-bottom: 35px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        .progress-ring {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            flex-shrink: 0;
+        }
+
+        .progress-ring svg { transform: rotate(-90deg); width: 100px; height: 100px; }
+        .progress-ring circle { fill: none; stroke-width: 8; stroke-linecap: round; }
+        .progress-ring .bg { stroke: rgba(255, 255, 255, 0.05); }
+        .progress-ring .fill {
+            stroke: var(--accent);
+            stroke-dasharray: 251.3; /* 2 * PI * 40 */
+            filter: drop-shadow(0 0 6px var(--accent-glow));
+        }
+
+        .percentage {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            width: 100%;
+        }
+
+        .stat-card {
+            background: rgba(0,0,0,0.2);
+            padding: 15px;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .stat-card small { display: block; color: var(--muted); font-size: 9px; text-transform: uppercase; margin-bottom: 2px; }
+        .stat-card span { font-family: 'JetBrains Mono', monospace; font-size: 1.2rem; font-weight: 700; }
+
+        /* --- ФІЛЬТРИ --- */
+        .filters {
+            display: flex;
+            gap: 10px;
             margin-bottom: 25px;
         }
 
-        .score-card {
-            background: linear-gradient(145deg, #2a2a2a, #1f1f1f);
-            padding: 12px 14px;
+        .btn-filter {
+            padding: 10px 20px;
             border-radius: 12px;
-            width: 240px;
-            text-align: center;
-            border: 1px solid #333;
-        }
-
-        .stats {
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .number {
-            font-size: 16px;
-            font-weight: 600;
-        }
-
-        .label {
-            font-size: 10px;
-            opacity: 0.6;
-        }
-
-        .correct .number { color: #4caf50; }
-        .wrong .number { color: #f44336; }
-        .total .number { color: #2196f3; }
-
-        .progress-bar {
-            background: #333;
-            border-radius: 6px;
-            height: 6px;
-            margin-top: 10px;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #4caf50, #81c784);
-        }
-
-        /* FILTERS */
-        .filters {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 30px;
-        }
-
-        .btn {
-            padding: 10px 18px;
-            border-radius: 8px;
-            text-decoration: none;
-            color: #eaeaea;
-            background-color: #2c2c2c;
-            border: 1px solid #444;
-        }
-
-        .btn:hover {
-            background-color: #3a3a3a;
-        }
-
-        .btn-junior { border: 1px solid #4caf50; }
-        .btn-mid { border: 1px solid #ffc107; }
-        .btn-senior { border: 1px solid #f44336; }
-
-        /* QUESTIONS */
-        .question {
-            background-color: #2a2a2a;
-            padding: 15px 20px;
-            margin-bottom: 12px;
-            border-radius: 10px;
-            border-left: 4px solid #555;
-        }
-
-        .question:hover {
-            background-color: #333;
-        }
-
-        .question-link {
-            color: #eaeaea;
-            text-decoration: none;
-            display: block;
-        }
-
-        .level {
-            font-size: 12px;
-            opacity: 0.7;
-            margin-top: 5px;
-        }
-
-        /* AI CHAT */
-        .ai-box {
-            background: #2a2a2a;
-            padding: 12px;
-            border-radius: 10px;
-            border: 1px solid #333;
-            min-height: 250px;
-            white-space: pre-wrap;
-        }
-
-        .ai-sidebar textarea {
-            width: 100%;
-            height: 120px;
-            background: #1e1e1e;
-            border: 1px solid #444;
-            color: #eaeaea;
-            border-radius: 8px;
-            padding: 10px;
-            resize: none;
-        }
-
-        .ai-sidebar button {
-            width: 100%;
-            margin-top: 10px;
-            padding: 10px;
-            background: #4caf50;
-            border: none;
-            color: white;
-            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--glass);
+            color: var(--text);
             cursor: pointer;
+            font-size: 13px;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .btn-filter:hover { background: white; color: black; }
+        .btn-active { background: var(--accent); color: black; border: none; box-shadow: 0 4px 12px var(--accent-glow); }
+
+        /* --- КОМПАКТНА СІТКА ПИТАНЬ --- */
+        .questions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 12px;
+        }
+
+        .question-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 16px;
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 100px;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .question-card:hover {
+            border-color: var(--accent);
+            background: rgba(255,255,255,0.05);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        .question-text {
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 1.4;
+            margin-bottom: 10px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .level-badge {
+            align-self: flex-start;
+            font-size: 9px;
+            padding: 3px 8px;
+            border-radius: 6px;
+            text-transform: uppercase;
+            font-weight: 700;
+            background: rgba(255,255,255,0.05);
+            color: var(--muted);
+            border: 1px solid var(--border);
+        }
+
+        .junior { color: #4ade80; border-color: rgba(74, 222, 128, 0.2); }
+        .mid { color: #fbbf24; border-color: rgba(251, 191, 36, 0.2); }
+        .senior { color: #f87171; border-color: rgba(248, 113, 113, 0.2); }
+
+        /* --- AI SIDEBAR --- */
+        .ai-sidebar {
+            flex: 1;
+            max-width: 400px;
+            background: var(--sidebar-bg);
+            backdrop-filter: blur(30px);
+            border-left: 1px solid var(--border);
+            padding: 35px;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-header { display: flex; align-items: center; gap: 10px; margin-bottom: 25px; }
+        .ai-dot { width: 8px; height: 8px; background: var(--success); border-radius: 50%; box-shadow: 0 0 10px var(--success); }
+
+        .chat-display { flex-grow: 1; overflow-y: auto; margin-bottom: 20px; }
+        .ai-bubble {
+            background: var(--glass);
+            border-left: 3px solid var(--accent);
+            padding: 15px;
+            border-radius: 0 16px 16px 16px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 100px;
+            background: rgba(0,0,0,0.4);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 15px;
+            color: white;
+            resize: none;
+            margin-bottom: 12px;
+            font-family: inherit;
+            outline: none;
+        }
+        textarea:focus { border-color: var(--accent); }
+
+        .btn-send {
+            width: 100%;
+            background: var(--accent);
+            color: #000;
+            font-weight: 700;
+            border: none;
+            padding: 14px;
+            border-radius: 14px;
+            cursor: pointer;
+        }
+
+        /* Welcome form */
+        .login-card {
+            text-align: center;
+            background: var(--glass);
+            padding: 40px;
+            border-radius: 30px;
+            border: 1px solid var(--border);
         }
     </style>
 </head>
-
 <body>
 
-<div class="page">
-
-    <!-- LEFT SIDE -->
-    <div class="container">
-
-        <h1>🧠 PyInterview AI</h1>
+<div class="page-wrapper">
+    <main class="main-content">
+        <h1>PyInterview AI</h1>
 
         {% if not username %}
-            <form method="POST" action="/set-user/" style="text-align:center;">
+        <div class="login-card">
+            <h2 style="margin-top: 0;">Master the Python Interview</h2>
+            <p style="color: var(--muted); margin-bottom: 25px;">Start your training session with our AI mentor.</p>
+            <form method="POST" action="/set-user/">
                 {% csrf_token %}
-                <input type="text" name="username" placeholder="Enter your name"
-                       style="padding:10px;border-radius:8px;border:none;">
-                <button type="submit"
-                        style="padding:10px 16px;border-radius:8px;background:#4caf50;color:white;border:none;">
-                    Start
-                </button>
+                <input type="text" name="username" placeholder="Your Name" required
+                       style="padding: 12px 15px; border-radius: 10px; border: 1px solid var(--border); background: #000; color: white; margin-right: 10px;">
+                <button class="btn-filter btn-active" type="submit">Begin Session</button>
             </form>
-
+        </div>
         {% else %}
 
-            <p class="welcome">Welcome, {{ username }} 👋</p>
-
-            {% if user_score %}
-            <div class="score-wrapper">
-                <div class="score-card">
-
-                    <div style="margin-bottom:10px;">📊 Progress</div>
-
-                    <div class="stats">
-                        <div class="correct">
-                            <div class="number">{{ user_score.correct }}</div>
-                            <div class="label">Correct</div>
-                        </div>
-
-                        <div class="wrong">
-                            <div class="number">{{ user_score.wrong }}</div>
-                            <div class="label">Wrong</div>
-                        </div>
-
-                        <div class="total">
-                            <div class="number">{{ user_score.score }}</div>
-                            <div class="label">Score</div>
-                        </div>
-                    </div>
-
+        <!-- COMPACT DASHBOARD -->
+        {% if user_score %}
+        <div class="score-dashboard">
+            <div class="progress-ring">
+                <svg>
+                    <circle class="bg" cx="50" cy="50" r="40"></circle>
                     {% with total=user_score.correct|add:user_score.wrong %}
-                    <div class="progress-bar">
-                        {% widthratio user_score.correct total 100 as percent %}
-                        <div class="progress-fill" style="width: {{ percent }}%"></div>
-                    </div>
+                    {% widthratio user_score.correct total 100 as percent %}
+                    <circle class="fill" cx="50" cy="50" r="40"
+                            style="stroke-dashoffset: calc(251.3 - (251.3 * {{ percent|default:0 }}) / 100);"></circle>
+                    <div class="percentage">{{ percent|default:0 }}%</div>
                     {% endwith %}
+                </svg>
+            </div>
 
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <small>Correct</small>
+                    <span style="color: var(--success);">{{ user_score.correct }}</span>
+                </div>
+                <div class="stat-card">
+                    <small>Mistakes</small>
+                    <span style="color: var(--error);">{{ user_score.wrong }}</span>
+                </div>
+                <div class="stat-card">
+                    <small>Exp</small>
+                    <span style="color: var(--accent);">{{ user_score.score }}</span>
                 </div>
             </div>
-            {% endif %}
-
+        </div>
         {% endif %}
 
-        <!-- FILTERS -->
         <div class="filters">
-            <a class="btn" href="/">All</a>
-            <a class="btn btn-junior" href="/level/junior/">Junior</a>
-            <a class="btn btn-mid" href="/level/mid/">Mid</a>
-            <a class="btn btn-senior" href="/level/senior/">Senior</a>
+            <a class="btn-filter" href="/">All</a>
+            <a class="btn-filter" href="/level/junior/">Junior</a>
+            <a class="btn-filter" href="/level/mid/">Mid</a>
+            <a class="btn-filter" href="/level/senior/">Senior</a>
         </div>
 
-        <!-- QUESTIONS -->
-        {% for q in questions %}
-            <div class="question">
-                <a class="question-link" href="/question/{{ q.id }}/">
-                    {{ q.text }}
-                    <div class="level">Level: {{ q.level }}</div>
-                </a>
+        <!-- COMPACT GRID -->
+        <div class="questions-grid">
+            {% for q in questions %}
+            <a href="/question/{{ q.id }}/" class="question-card">
+                <div class="question-text">{{ q.text }}</div>
+                <span class="level-badge {{ q.level|lower }}">{{ q.level }}</span>
+            </a>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </main>
+
+    <!-- AI ASIDE -->
+    <aside class="ai-sidebar">
+        <div class="chat-header">
+            <div class="ai-dot"></div>
+            <h3 style="margin: 0; font-size: 1.1rem;">AI Mentor</h3>
+        </div>
+
+        <div class="chat-display" id="chat-display">
+            <div class="ai-bubble" id="ai-box">
+                {% if not username %}
+                Hello! Sign in to get personalized Python mentorship and code reviews.
+                {% else %}
+                Welcome back, <strong>{{ username }}</strong>! Ask me about Python concepts or paste your code for review.
+                {% endif %}
             </div>
-        {% endfor %}
-
-    </div>
-
-    <!-- RIGHT SIDE AI (iChat) -->
-    <div class="ai-sidebar">
-
-        <h3>💬 iChat Mentor</h3>
-
-        <p>Ask anything about Python, interviews, or coding</p>
-
-        <textarea id="answer" placeholder="Ask your question..."></textarea>
-
-        <button onclick="sendChat()">Ask AI</button>
-
-        <div class="ai-box" id="ai-box">
-            AI response will appear here
         </div>
 
-    </div>
-
+        {% if username %}
+        <div class="input-container">
+            <textarea id="answer" placeholder="Paste your answer or ask a question..."></textarea>
+            <button class="btn-send" onclick="sendChat()" id="send-btn">Analyze with AI</button>
+        </div>
+        {% endif %}
+    </aside>
 </div>
 
-<!-- =========================
-     CSRF + CHAT LOGIC FIXED
-========================= -->
 <script>
-
-function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
-
-const csrftoken = getCookie('csrftoken');
-
-
 async function sendChat() {
+    const btn = document.getElementById("send-btn");
+    const box = document.getElementById("ai-box");
     const message = document.getElementById("answer").value;
 
-    if (!message.trim()) {
-        alert("Write something first");
-        return;
+    if(!message) return;
+
+    btn.innerText = "Thinking...";
+    btn.disabled = true;
+
+    try {
+        const res = await fetch("/ai-chat/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "X-CSRFToken": "{{ csrf_token }}"
+            },
+            body: new URLSearchParams({ message })
+        });
+
+        const data = await res.json();
+        box.innerHTML = `
+            <div style="color: var(--accent); font-weight: 700; margin-bottom: 5px;">AI Mentor:</div>
+            ${data.response}
+            <div style="margin-top: 12px; font-size: 12px; opacity: 0.7; border-top: 1px solid var(--border); padding-top: 8px;">
+                💡 <strong>Tip:</strong> ${data.tip || "Keep practicing!"}
+            </div>
+        `;
+        document.getElementById("answer").value = "";
+    } catch (e) {
+        box.innerText = "Connection lost. Please try again.";
+    } finally {
+        btn.innerText = "Analyze with AI";
+        btn.disabled = false;
     }
-
-    const res = await fetch("/ai-chat/", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-            "X-CSRFToken": csrftoken
-        },
-        body: new URLSearchParams({
-            message: message
-        })
-    });
-
-    const data = await res.json();
-
-    document.getElementById("ai-box").innerHTML = `
-${data.response || ""}
-
-${data.example ? "\nExample:\n" + data.example : ""}
-
-${data.tip ? "\nTip:\n" + data.tip : ""}
-    `;
 }
-
 </script>
 
 </body>

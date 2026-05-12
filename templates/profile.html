@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block content %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<div style="max-width: 1000px; margin: 40px auto; padding: 0 20px;">
+    <h1 style="color: white; margin-bottom: 30px;">Прогрес користувача: {{ username }}</h1>
+
+    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px;">
+        
+        <!-- Графік -->
+        <div class="glass-card" style="background: rgba(31, 41, 55, 0.3); border: 1px solid var(--border); border-radius: 24px; padding: 30px;">
+            <h3 style="color: var(--muted); margin-top: 0;">Аналітика балів (7 днів)</h3>
+            <canvas id="progressChart" height="200"></canvas>
+        </div>
+
+        <!-- Статистика -->
+        <div class="glass-card" style="background: var(--sidebar-bg); border: 1px solid var(--border); border-radius: 24px; padding: 30px;">
+            <h3 style="color: var(--muted); margin-top: 0;">Останні спроби</h3>
+            <div style="display: flex; flex-direction: column; gap: 15px;">
+                {% for attempt in history %}
+                <div style="border-bottom: 1px solid var(--border); padding-bottom: 10px;">
+                    <div style="font-size: 14px; font-weight: 600;">{{ attempt.question.text|truncatechars:40 }}</div>
+                    <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--accent);">
+                        <span>{{ attempt.date|date:"d M" }}</span>
+                        <span>{{ attempt.score }}/10</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const ctx = document.getElementById('progressChart').getContext('2d');
+    
+    // Отримуємо дані з Django
+    const rawData = {{ stats|safe }};
+    const labels = rawData.map(d => d.day);
+    const scores = rawData.map(d => d.avg_score);
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Середній бал',
+                data: scores,
+                borderColor: '#38bdf8',
+                backgroundColor: 'rgba(56, 189, 248, 0.1)',
+                fill: true,
+                tension: 0.4,
+                borderWidth: 3,
+                pointBackgroundColor: '#38bdf8'
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: {
+                y: { beginAtZero: true, max: 10, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#9ca3af' } },
+                x: { grid: { display: false }, ticks: { color: '#9ca3af' } }
+            }
+        }
+    });
+</script>
+{% endblock %}

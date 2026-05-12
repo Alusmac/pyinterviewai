@@ -1,18 +1,20 @@
+import json
+from datetime import timedelta
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
+from django.utils import timezone
+from django.db.models import Avg
+from django.db.models.functions import TruncDate
 
-from .models import Question, UserScore
+from .models import Question, UserScore, InterviewAttempt
 from .ai import get_ai_feedback
-
-from django.http import JsonResponse
 from .ai_chat import get_ai_chat
 
 
 def home(request: HttpRequest) -> HttpResponse:
-    """ home view
-    """
+    """ Головна сторінка """
     username = request.session.get("username")
-
+    # Використовуємо 'junior' як рівень за замовчуванням
     questions = Question.objects.filter(level="junior")
 
     user_score = None
@@ -22,104 +24,137 @@ def home(request: HttpRequest) -> HttpResponse:
     return render(request, "home.html", {
         "questions": questions,
         "username": username,
-        "user_score": user_score
+        "user_score": user_score,
+        "current_level": "junior"
     })
 
 
-def question_view(request: HttpRequest, id: int) -> HttpResponse:
-    """ question view
-    """
-    question = get_object_or_404(Question, id=id)
-
-    return render(request, "question.html", {
-        "question": question
-    })
-
-
-def result(request: HttpRequest) -> HttpResponse:
-    """ result view
-    """
-    if request.method == "POST":
-
-        question_id = request.POST.get("question_id")
-        answer = request.POST.get("answer")
-        username = request.session.get("username")
-
-        question = get_object_or_404(Question, id=question_id)
-
-        result_data = get_ai_feedback(question.text, answer)
-
-        score = int(result_data.get("score", 0))
-        is_correct = score >= 7
-
-        if username:
-            update_score(username, is_correct)
-
-        return JsonResponse({
-            "level": result_data.get("level"),
-            "score": score,
-            "feedback": result_data.get("feedback"),
-            "improvement": result_data.get("improvement")
-        })
-
-    return JsonResponse({"error": "POST only"})
-
-
-def questions_by_level(request: HttpRequest, level: int) -> HttpResponse:
-    """ questions_by_level view
-    """
+def questions_by_level(request: HttpRequest, level: str) -> HttpResponse:
+    """ Фільтрація питань за рівнем (URL: /level/junior/ тощо) """
+    username = request.session.get("username")
     questions = Question.objects.filter(level=level)
 
-    username = request.session.get("username")
     user_score = None
-
     if username:
         user_score, _ = UserScore.objects.get_or_create(username=username)
 
     return render(request, "home.html", {
         "questions": questions,
-        "level": level,
         "username": username,
-        "user_score": user_score
+        "user_score": user_score,
+        "current_level": level
+    })
+
+
+def question_view(request: HttpRequest, id: int) -> HttpResponse:
+    """ Сторінка питання з редактором та таймером """
+    question = get_object_or_404(Question, id=id)
+    return render(request, "question.html", {
+        "question": question,
+        "timer": 60
+    })
+
+
+def result(request: HttpRequest) -> HttpResponse:
+    """ Обробка відповіді від AI та запис в історію """
+    if request.method == "POST":
+        question_id = request.POST.get("question_id")
+        answer = request.POST.get("answer", "")
+        username = request.session.get("username")
+
+        question = get_object_or_404(Question, id=question_id)
+        result_data = get_ai_feedback(question.text, answer)
+
+        # Отримуємо score та перетворюємо в ціле число
+        score = int(result_data.get("score", 0))
+        is_correct = score >= 7
+
+        if username:
+            # Оновлюємо загальну статку (правильно/неправильно)
+            update_score(username, is_correct)
+
+            # Зберігаємо кожну спробу для графіка прогресу
+            InterviewAttempt.objects.create(
+                username=username,
+                question=question,
+                score=score
+            )
+
+        return JsonResponse({
+            "score": score,
+            "feedback": result_data.get("feedback"),
+            "improvement": result_data.get("improvement"),
+            "level": result_data.get("level")
+        })
+
+    return JsonResponse({"error": "POST only"}, status=405)
+
+
+def profile_view(request: HttpRequest) -> HttpResponse:
+    """ Сторінка статистики та прогресу """
+    username = request.session.get("username")
+    if not username:
+        return redirect("home")
+
+    # Середній бал за останні 7 днів для графіка
+    last_week = timezone.now() - timedelta(days=7)
+    stats_query = (
+        InterviewAttempt.objects.filter(username=username, date__gte=last_week)
+        .annotate(day=TruncDate('date'))
+        .values('day')
+        .annotate(avg_score=Avg('score'))
+        .order_by('day')
+    )
+
+    stats_data = [
+        {"day": item['day'].strftime('%d.%m'), "avg_score": float(item['avg_score'])}
+        for item in stats_query
+    ]
+
+    history = InterviewAttempt.objects.filter(username=username).order_by('-date')[:10]
+    user_stats, _ = UserScore.objects.get_or_create(username=username)
+
+    return render(request, "profile.html", {
+        "username": username,
+        "stats": json.dumps(stats_data),
+        "history": history,
+        "user_stats": user_stats
     })
 
 
 def set_user(request: HttpRequest) -> HttpResponse:
-    """ set_user view
-    """
+    """ Встановлення імені користувача в сесію """
     if request.method == "POST":
         username = request.POST.get("username")
-
-        request.session["username"] = username
-        UserScore.objects.get_or_create(username=username)
-
+        if username:
+            request.session["username"] = username
+            UserScore.objects.get_or_create(username=username)
     return redirect("home")
 
 
-def update_score(username: str | int, is_correct: bool) -> bool:
-    """ update_score view
-    """
+def update_score(username: str, is_correct: bool):
+    """ Допоміжна функція оновлення статистики """
     user, _ = UserScore.objects.get_or_create(username=username)
-
     if is_correct:
         user.correct += 1
     else:
         user.wrong += 1
-
     user.save()
 
 
 def ai_chat(request: HttpRequest) -> HttpResponse:
-    """ ai_chat view
-    """
+    """ Чат з AI-асистентом """
     if request.method == "POST":
-        message = request.POST.get("message")
+        try:
+            data = json.loads(request.body)
+            message = data.get("message", "")
+        except json.JSONDecodeError:
+            message = request.POST.get("message", "")
 
         if not message:
-            return JsonResponse({"error": "empty message"})
+            return JsonResponse({"error": "No message provided"}, status=400)
 
         result = get_ai_chat(message)
-
         return JsonResponse(result)
 
-    return JsonResponse({"error": "POST only"})
+    return render(request, "ai_chat.html")

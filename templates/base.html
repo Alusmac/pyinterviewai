@@ -1,19 +1,64 @@
-<div style="display:flex;">
+<!DOCTYPE html>
+<html>
+<head>
+  <title>PyInterview AI</title>
 
-  <!-- LEFT SIDE -->
-  <div style="flex:2;">
-    {% block content %}{% endblock %}
+  <style>
+    :root {
+      --bg: #0B1220;
+      --panel: #111A2B;
+      --border: #1F2A44;
+      --text: #E5E7EB;
+      --muted: #94A3B8;
+      --accent: #38BDF8;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .btn {
+      background: var(--accent);
+      color: #000;
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: none;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn:hover {
+      opacity: 0.9;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    {% block content %}
+    {% endblock %}
   </div>
-
-  <!-- RIGHT SIDE (AI PANEL) -->
-  <div style="flex:1; border-left:1px solid #ddd; padding:10px;">
-    <h3>AI Assistant</h3>
-
-    <div id="ai-box">
-      {% block ai %}
-      <p>Ask a question to see AI feedback</p>
-      {% endblock %}
-    </div>
-  </div>
-
-</div>
+</body>
+</html>
