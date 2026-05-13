@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uk">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,16 +22,14 @@
             --glass: rgba(255, 255, 255, 0.03);
         }
 
-        * {
-            box-sizing: border-box;
-            transition: all 0.2s ease;
-        }
+        * { box-sizing: border-box; transition: all 0.2s ease; }
 
         body {
             margin: 0;
             font-family: 'Inter', sans-serif;
             background: var(--bg);
             color: var(--text);
+            overflow-x: hidden;
         }
 
         .page-wrapper {
@@ -41,192 +39,135 @@
             min-height: 100vh;
         }
 
-        /* MAIN */
+        /* MAIN CONTENT */
         .main-content {
             flex: 2;
             padding: 40px 50px;
         }
 
         h1 {
-            font-size: 2.2rem;
+            font-size: 2.5rem;
             font-weight: 800;
             background: linear-gradient(to right, #fff, var(--accent));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
         }
 
-        /* ================= DASHBOARD ================= */
+        /* LOGIN FORM CARD */
+        .login-box {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            padding: 40px;
+            border-radius: 24px;
+            max-width: 500px;
+            backdrop-filter: blur(10px);
+        }
+
+        .input-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            background: rgba(0,0,0,0.4);
+            border: 1px solid var(--border);
+            padding: 14px 18px;
+            border-radius: 12px;
+            color: white;
+            font-size: 16px;
+            outline: none;
+        }
+
+        input[type="text"]:focus { border-color: var(--accent); }
+
+        .btn-primary {
+            background: var(--accent);
+            color: #000;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        /* DASHBOARD STATS */
         .dashboard-card {
             display: flex;
             justify-content: space-between;
             align-items: center;
-
             background: var(--glass);
             border: 1px solid var(--border);
             border-radius: 18px;
-
-            padding: 18px 20px;
-            margin: 20px 0 30px 0;
-
-            backdrop-filter: blur(12px);
+            padding: 20px 25px;
+            margin-bottom: 40px;
         }
 
-        .dashboard-title {
-            font-size: 11px;
-            color: var(--muted);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 10px;
-        }
-
-        .stats-row {
-            display: flex;
-            gap: 25px;
-        }
-
-        .stat {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .label {
-            font-size: 10px;
-            color: var(--muted);
-            text-transform: uppercase;
-        }
-
-        .value {
-            font-size: 18px;
-            font-weight: 800;
-            font-family: 'JetBrains Mono', monospace;
-        }
+        .stats-row { display: flex; gap: 30px; }
+        .stat { display: flex; flex-direction: column; }
+        .label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+        .value { font-size: 22px; font-weight: 800; font-family: 'JetBrains Mono'; }
 
         .success { color: var(--success); }
         .error { color: var(--error); }
         .accent { color: var(--accent); }
 
-        /* ================= NOTION CARD BUTTON ================= */
+        /* NOTION STYLE PROFILE LINK */
         .notion-card {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-
-            gap: 12px;
-            padding: 12px 14px;
-
-            border-radius: 14px;
-            border: 1px solid var(--border);
-            background: rgba(255,255,255,0.03);
-
-            text-decoration: none;
-            color: var(--text);
-
-            width: 250px;
+            display: flex; align-items: center; gap: 15px;
+            padding: 12px 20px; border-radius: 14px;
+            border: 1px solid var(--border); background: rgba(255,255,255,0.03);
+            text-decoration: none; color: var(--text);
         }
+        .notion-card:hover { border-color: var(--accent); background: rgba(56, 189, 248, 0.1); transform: translateX(5px); }
 
-        .notion-card:hover {
-            transform: translateY(-2px);
-            border-color: var(--accent);
-            background: rgba(56, 189, 248, 0.08);
-        }
-
-        .notion-icon {
-            width: 34px;
-            height: 34px;
-            border-radius: 10px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            background: rgba(56, 189, 248, 0.15);
-        }
-
-        .notion-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .notion-title {
-            font-size: 13px;
-            font-weight: 700;
-        }
-
-        .notion-subtitle {
-            font-size: 11px;
-            color: var(--muted);
-        }
-
-        .notion-arrow {
-            color: var(--muted);
-        }
-
-        .notion-card:hover .notion-arrow {
-            color: var(--accent);
-            transform: translateX(3px);
-        }
-
-        /* FILTERS */
-        .filters {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .btn-filter {
-            padding: 10px 14px;
-            border-radius: 10px;
-            border: 1px solid var(--border);
-            background: var(--glass);
-            color: var(--text);
-            text-decoration: none;
-            font-size: 13px;
-        }
-
-        .btn-filter:hover {
-            background: white;
-            color: black;
-        }
-
-        /* QUESTIONS */
+        /* QUESTIONS GRID */
         .questions-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-            gap: 12px;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
         }
 
         .question-card {
             background: var(--card-bg);
             border: 1px solid var(--border);
-            padding: 16px;
-            border-radius: 16px;
+            padding: 24px;
+            border-radius: 20px;
             text-decoration: none;
             color: inherit;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
         }
 
         .question-card:hover {
             border-color: var(--accent);
-            transform: translateY(-3px);
+            transform: translateY(-5px);
+            background: rgba(255,255,255,0.05);
         }
 
         .level-badge {
+            align-self: flex-start;
             font-size: 10px;
-            padding: 4px 8px;
-            border-radius: 6px;
-            background: rgba(255,255,255,0.05);
-            margin-top: 10px;
-            display: inline-block;
+            font-weight: 700;
+            padding: 5px 10px;
+            border-radius: 8px;
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--accent);
+            text-transform: uppercase;
+            margin-top: 15px;
         }
 
         /* SIDEBAR */
         .ai-sidebar {
             flex: 1;
-            max-width: 400px;
+            max-width: 380px;
             background: var(--sidebar-bg);
             border-left: 1px solid var(--border);
-            padding: 30px;
+            padding: 40px 30px;
             position: sticky;
             top: 0;
             height: 100vh;
@@ -234,32 +175,47 @@
 
         .ai-bubble {
             background: var(--glass);
-            border-left: 3px solid var(--accent);
-            padding: 15px;
+            border-left: 4px solid var(--accent);
+            padding: 20px;
             border-radius: 0 16px 16px 16px;
+            line-height: 1.5;
+            margin-bottom: 20px;
         }
 
         textarea {
             width: 100%;
-            min-height: 100px;
-            background: rgba(0,0,0,0.4);
+            min-height: 120px;
+            background: rgba(0,0,0,0.3);
             border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 12px;
+            border-radius: 16px;
+            padding: 15px;
             color: white;
-            margin-top: 10px;
+            font-family: inherit;
+            resize: none;
+            outline: none;
         }
+        textarea:focus { border-color: var(--accent); }
 
         .btn-send {
             width: 100%;
             background: var(--accent);
-            color: black;
-            font-weight: 700;
+            color: #000;
+            font-weight: 800;
             border: none;
-            padding: 12px;
-            border-radius: 12px;
-            margin-top: 10px;
+            padding: 16px;
+            border-radius: 14px;
+            margin-top: 15px;
+            cursor: pointer;
         }
+
+        /* FILTERS */
+        .filters { display: flex; gap: 12px; margin-bottom: 30px; }
+        .btn-filter {
+            padding: 8px 16px; border-radius: 10px;
+            border: 1px solid var(--border); background: var(--glass);
+            color: var(--muted); text-decoration: none; font-size: 14px;
+        }
+        .btn-filter:hover, .btn-filter.active { background: #fff; color: #000; border-color: #fff; }
 
     </style>
 </head>
@@ -268,123 +224,117 @@
 
 <div class="page-wrapper">
 
-    <!-- MAIN -->
     <main class="main-content">
-
         <h1>PyInterview AI</h1>
 
         {% if username %}
-
-        <!-- DASHBOARD -->
-        {% if user_score %}
-        <div class="dashboard-card">
-
-            <div>
-                <div class="dashboard-title">Your Progress</div>
-
+            <!-- ВІДОБРАЖАЄТЬСЯ, ЯКЩО КОРИСТУВАЧ УВІЙШОВ -->
+            <div class="dashboard-card">
                 <div class="stats-row">
-
                     <div class="stat">
                         <div class="label">Correct</div>
-                        <div class="value success">{{ user_score.correct }}</div>
+                        <div class="value success">{{ user_score.correct|default:0 }}</div>
                     </div>
-
                     <div class="stat">
                         <div class="label">Wrong</div>
-                        <div class="value error">{{ user_score.wrong }}</div>
+                        <div class="value error">{{ user_score.wrong|default:0 }}</div>
                     </div>
-
                     <div class="stat">
                         <div class="label">Total</div>
-                        <div class="value accent">
-                            {{ user_score.correct|add:user_score.wrong }}
-                        </div>
+                        <div class="value accent">{{ total_answered|default:0 }}</div>
                     </div>
-
                 </div>
+
+                <a href="{% url 'profile' %}" class="notion-card">
+                    <span style="font-size: 24px;">📊</span>
+                    <div style="display: flex; flex-direction: column;">
+                        <span style="font-weight: 700; font-size: 14px;">My Stats</span>
+                        <span style="color: var(--muted); font-size: 11px;">View history</span>
+                    </div>
+                    <span style="color: var(--accent);">→</span>
+                </a>
             </div>
 
-            <!-- NOTION STYLE BUTTON -->
-            <a href="{% url 'profile' %}" class="notion-card">
+            <div class="filters">
+                <a class="btn-filter active" href="/">All Questions</a>
+                <a class="btn-filter" href="/level/junior/">Junior</a>
+                <a class="btn-filter" href="/level/mid/">Mid</a>
+                <a class="btn-filter" href="/level/senior/">Senior</a>
+            </div>
 
-                <div class="notion-icon">📊</div>
-
-                <div class="notion-content">
-                    <div class="notion-title">Performance Insights</div>
-                    <div class="notion-subtitle">Track your progress</div>
-                </div>
-
-                <div class="notion-arrow">→</div>
-
-            </a>
-
-        </div>
-        {% endif %}
-
-        <!-- FILTERS -->
-        <div class="filters">
-            <a class="btn-filter" href="/">All</a>
-            <a class="btn-filter" href="/level/junior/">Junior</a>
-            <a class="btn-filter" href="/level/mid/">Mid</a>
-            <a class="btn-filter" href="/level/senior/">Senior</a>
-        </div>
-
-        <!-- QUESTIONS -->
-        <div class="questions-grid">
-            {% for q in questions %}
-            <a href="/question/{{ q.id }}/" class="question-card">
-                <div>{{ q.text }}</div>
-                <div class="level-badge">{{ q.level }}</div>
-            </a>
-            {% endfor %}
-        </div>
+            <div class="questions-grid">
+                {% for q in questions %}
+                <a href="/question/{{ q.id }}/" class="question-card">
+                    <div style="font-size: 16px; font-weight: 600; line-height: 1.4;">{{ q.text }}</div>
+                    <div class="level-badge">{{ q.level }}</div>
+                </a>
+                {% empty %}
+                <p style="color: var(--muted);">No questions found in database. Add some via Admin!</p>
+                {% endfor %}
+            </div>
 
         {% else %}
-        <p style="color: var(--muted);">Please sign in to start practicing.</p>
-        {% endif %}
+            <!-- ВІДОБРАЖАЄТЬСЯ, ЯКЩО ТРЕБА ВВЕСТИ ІМ'Я -->
+            <div class="login-box">
+                <h2 style="margin-top: 0;">Welcome, Developer!</h2>
+                <p style="color: var(--muted); line-height: 1.6;">Enter your name to start the AI-powered interview practice. We will track your progress and provide personalized feedback.</p>
 
+                <form action="{% url 'login' %}" method="POST" class="input-group">
+                    {% csrf_token %}
+                    <input type="text" name="username" placeholder="Enter your name..." required autofocus>
+                    <button type="submit" class="btn-primary">Get Started</button>
+                </form>
+            </div>
+        {% endif %}
     </main>
 
-    <!-- SIDEBAR -->
     <aside class="ai-sidebar">
+        <h3 style="margin-top: 0; margin-bottom: 25px; display: flex; align-items: center; gap: 10px;">
+            <span style="color: var(--accent);">✦</span> AI Mentor
+        </h3>
 
-        <h3>AI Mentor</h3>
-
-        <div class="ai-bubble">
+        <div class="ai-bubble" id="chat-bubble">
             {% if username %}
-                Welcome back, {{ username }}!
+                Hello <b>{{ username }}</b>! I'm your AI mentor. Choose a question or ask me anything about Python.
             {% else %}
-                Sign in to use AI mentor.
+                Please enter your name to unlock the AI Mentor features.
             {% endif %}
         </div>
 
         {% if username %}
-        <textarea id="answer" placeholder="Ask AI..."></textarea>
-        <button class="btn-send" onclick="sendChat()">Analyze</button>
+        <textarea id="ai-input" placeholder="Type your question here..."></textarea>
+        <button class="btn-send" onclick="sendChat()">Analyze & Ask</button>
         {% endif %}
-
     </aside>
 
 </div>
 
 <script>
 async function sendChat() {
-    const message = document.getElementById("answer").value;
+    const input = document.getElementById("ai-input");
+    const bubble = document.getElementById("chat-bubble");
+    const message = input.value.trim();
+
     if (!message) return;
 
-    const res = await fetch("/ai-chat/", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-            "X-CSRFToken": "{{ csrf_token }}"
-        },
-        body: new URLSearchParams({ message })
-    });
+    bubble.innerHTML = "<i>AI is thinking...</i>";
+    input.value = "";
 
-    const data = await res.json();
+    try {
+        const res = await fetch("/ai-chat/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "X-CSRFToken": "{{ csrf_token }}"
+            },
+            body: new URLSearchParams({ message })
+        });
 
-    document.querySelector(".ai-bubble").innerHTML =
-        `<b>AI:</b><br>${data.response}<br><small>${data.tip || ""}</small>`;
+        const data = await res.json();
+        bubble.innerHTML = `<b>AI:</b><br>${data.response}`;
+    } catch (e) {
+        bubble.innerHTML = "<span style='color: var(--error);'>Error connecting to AI.</span>";
+    }
 }
 </script>
 
