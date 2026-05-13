@@ -15,7 +15,7 @@ def home(request: HttpRequest) -> HttpResponse:
     """ home view
      """
     username = request.session.get("username")
-    questions = Question.objects.filter(level="junior")
+    questions = Question.objects.filter(level="Junior")
 
     user_score = None
     if username:
@@ -25,7 +25,7 @@ def home(request: HttpRequest) -> HttpResponse:
         "questions": questions,
         "username": username,
         "user_score": user_score,
-        "current_level": "junior"
+        "current_level": "Junior"
     })
 
 
