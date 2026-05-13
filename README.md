@@ -5,7 +5,7 @@ An AI-powered Python interview training platform that helps users practice codin
 ---
 
 ## 🚀 Live Demo
-*http//*
+*https://pyinterviewai.onrender.com*
 
 
 ---
