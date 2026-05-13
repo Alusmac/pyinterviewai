@@ -1,0 +1,290 @@
+[
+  {
+    "model": "interview.question",
+    "pk": 1,
+    "fields": {
+      "text": "What are the main differences between Python 2 and Python 3?",
+      "level": "Junior"
+    }
+  },
+  {
+    "model": "interview.question",
+    "pk": 2,
+    "fields": {
+      "text": "What are the built-in mutable and immutable types in Python?",
+      "level": "Junior"
+    }
+  },
+  {
+    "model": "interview.question",
+    "pk": 3,
+    "fields": {
+      "text": "What is the difference between a List and a Tuple?",
+      "level": "Junior"
+    }
+  },
+  {
+    "model": "interview.question",
+    "pk": 4,
+    "fields": {
+      "text": "How do you manage packages in your Python projects?",
+      "level": "Junior"
+    }
+  },
+  {
+    "model": "interview.question",
+    "pk": 5,
+    "fields": {
+      "text": "What is the difference between is and == operators?",
+      "level": "Junior"
+    }
+  },
+  {
+    "model": "interview.question",
+    "pk": 6,
+    "fields": {
+      "text": "What are Python Decorators and how do they work?",
+      "level": "Junior"
+    }
+  },
+  {
+    "model": "interview.question",
+    "pk": 7,
+    "fields": {
+      "text": "What is a PEP 8 and why is it important?",
+      "level": "Junior"
+    }
+  },
+  {
+    "model": "interview.question",
+    "pk": 8,
+    "fields": {
+      "text": "What are *args and **kwargs used for?",
+      "level": "Junior"
+    }
+  },
+  {
+    "model": "interview.question",
+    "pk": 9,
+    "fields": {
+      "text": "How does list comprehension work?",
+      "level": "Junior"
+    }
+  },
+  {
+    "model": "interview.question",
+    "pk": 10,
+    "fields": {
+      "text": "What is the difference between range and xrange?",
+      "level": "Junior"
+    }
+  },
+  {
+    "model": "interview.question",
+    "pk": 11,
+    "fields": {
+      "text": "Explain the try...except...finally block.",
+      "level": "Junior"
+    }
+  },
+  {
+    "model": "interview.question",
+    "pk": 12,
+    "fields": {
+      "text": "What are Lambda functions?",
+      "level": "Junior"
+    }
+  },
+  {
+    "model": "interview.question",
+    "pk": 13,
+    "fields": {
+      "text": "Explain the Global Interpreter Lock (GIL).",
+      "level": "Middle"
+    }
+  },
+  {
+    "model": "interview.question",
+    "pk": 14,
+    "fields": {
+      "text": "What is the difference between threading and multiprocessing modules?",
+      "level": "Middle"
+    }
+  },
+  {
+    "model": "interview.question",
+    "pk": 15,
+    "fields": {
+      "text": "How does Python's Garbage Collector work?",
+      "level": "Middle"
+    }
+  },
+  {
+    "model": "interview.question",
+    "pk": 16,
+    "fields": {
+      "text": "What are Generators and how do they differ from Iterators?",
+      "level": "Middle"
+    }
+  },
+  {
+    "model": "interview.question",
+    "pk": 17,
+    "fields": {
+      "text": "Explain the Method Resolution Order (MRO) in Python.",
+      "level": "Middle"
+    }
+  },
+  {
+    "model": "interview.question",
+    "pk": 18,
+    "fields": {
+      "text": "What are Context Managers and the with statement?",
+      "level": "Middle"
+    }
+  },
+  {
+    "model": "interview.question",
+    "pk": 19,
+    "fields": {
+      "text": "What is the difference between @staticmethod and @classmethod?",
+      "level": "Middle"
+    }
+  },
+  {
+    "model": "interview.question",
+    "pk": 20,
+    "fields": {
+      "text": "How does asyncio handle concurrency?",
+      "level": "Middle"
+    }
+  },
+  {
+    "model": "interview.question",
+    "pk": 21,
+    "fields": {
+      "text": "Explain the difference between Deep Copy and Shallow Copy.",
+      "level": "Middle"
+    }
+  },
+  {
+    "model": "interview.question",
+    "pk": 22,
+    "fields": {
+      "text": "How do you use property decorators for getters and setters?",
+      "level": "Middle"
+    }
+  },
+  {
+    "model": "interview.question",
+    "pk": 23,
+    "fields": {
+      "text": "What are Abstract Base Classes (ABCs)?",
+      "level": "Middle"
+    }
+  },
+  {
+    "model": "interview.question",
+    "pk": 24,
+    "fields": {
+      "text": "How do you profile a Python script to find bottlenecks?",
+      "level": "Middle"
+    }
+  },
+  {
+    "model": "interview.question",
+    "pk": 25,
+    "fields": {
+      "text": "Describe the internal implementation of a Python Dictionary.",
+      "level": "Senior"
+    }
+  },
+  {
+    "model": "interview.question",
+    "pk": 26,
+    "fields": {
+      "text": "What are Metaclasses and when should you use them?",
+      "level": "Senior"
+    }
+  },
+  {
+    "model": "interview.question",
+    "pk": 27,
+    "fields": {
+      "text": "How would you implement a Thread-safe Singleton in Python?",
+      "level": "Senior"
+    }
+  },
+  {
+    "model": "interview.question",
+    "pk": 28,
+    "fields": {
+      "text": "Explain the C3 Linearization algorithm.",
+      "level": "Senior"
+    }
+  },
+  {
+    "model": "interview.question",
+    "pk": 29,
+    "fields": {
+      "text": "How do you handle memory leaks in a long-running Python process?",
+      "level": "Senior"
+    }
+  },
+  {
+    "model": "interview.question",
+    "pk": 30,
+    "fields": {
+      "text": "Discuss the pros and cons of using Type Hinting in large codebases.",
+      "level": "Senior"
+    }
+  },
+  {
+    "model": "interview.question",
+    "pk": 31,
+    "fields": {
+      "text": "How does the Python memory manager handle small objects (PyMalloc)?",
+      "level": "Senior"
+    }
+  },
+  {
+    "model": "interview.question",
+    "pk": 32,
+    "fields": {
+      "text": "What are 'slots' in Python classes and how do they impact memory?",
+      "level": "Senior"
+    }
+  },
+  {
+    "model": "interview.question",
+    "pk": 33,
+    "fields": {
+      "text": "How would you design a plugin architecture using Python?",
+      "level": "Senior"
+    }
+  },
+  {
+    "model": "interview.question",
+    "pk": 34,
+    "fields": {
+      "text": "Explain the internals of Python's Import system.",
+      "level": "Senior"
+    }
+  },
+  {
+    "model": "interview.question",
+    "pk": 35,
+    "fields": {
+      "text": "How do you optimize Python code using Cython or PyPy?",
+      "level": "Senior"
+    }
+  },
+  {
+    "model": "interview.question",
+    "pk": 36,
+    "fields": {
+      "text": "Describe the differences between various WSGI and ASGI servers.",
+      "level": "Senior"
+    }
+  }
+]
