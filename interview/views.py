@@ -30,10 +30,16 @@ def home(request: HttpRequest) -> HttpResponse:
 
 
 def questions_by_level(request: HttpRequest, level: str) -> HttpResponse:
-    """ filter for level  (URL: /level/junior/ )
-    """
+    """ filter for level (URL: /level/junior/ ) """
     username = request.session.get("username")
-    questions = Question.objects.filter(level=level)
+
+    formatted_level = level.capitalize()
+
+    if formatted_level == "Middle" or formatted_level == "Mid":
+        formatted_level = "Middle"
+
+
+    questions = Question.objects.filter(level=formatted_level)
 
     user_score = None
     if username:
@@ -43,7 +49,7 @@ def questions_by_level(request: HttpRequest, level: str) -> HttpResponse:
         "questions": questions,
         "username": username,
         "user_score": user_score,
-        "current_level": level
+        "current_level": formatted_level
     })
 
 
