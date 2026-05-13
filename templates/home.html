@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="uk">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,319 +22,317 @@
             --glass: rgba(255, 255, 255, 0.03);
         }
 
-        * { box-sizing: border-box; transition: all 0.2s ease; }
+        * {
+            box-sizing: border-box;
+        }
 
         body {
             margin: 0;
             font-family: 'Inter', sans-serif;
             background: var(--bg);
             color: var(--text);
-            overflow-x: hidden;
         }
 
-        .page-wrapper {
+        .layout {
             display: flex;
             max-width: 1600px;
             margin: auto;
             min-height: 100vh;
         }
 
-        /* MAIN CONTENT */
-        .main-content {
+        /* MAIN */
+        .main {
             flex: 2;
             padding: 40px 50px;
         }
 
         h1 {
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             font-weight: 800;
             background: linear-gradient(to right, #fff, var(--accent));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
-        /* LOGIN FORM CARD */
-        .login-box {
-            background: var(--glass);
-            border: 1px solid var(--border);
-            padding: 40px;
-            border-radius: 24px;
-            max-width: 500px;
-            backdrop-filter: blur(10px);
+        /* AUTH */
+        .auth-box {
+            margin-bottom: 20px;
+            color: var(--muted);
         }
 
-        .input-group {
+        .auth-form {
             display: flex;
-            gap: 12px;
-            margin-top: 20px;
+            gap: 10px;
+            margin-bottom: 15px;
         }
 
-        input[type="text"] {
+        .auth-input {
             flex: 1;
-            background: rgba(0,0,0,0.4);
+            padding: 10px 14px;
+            border-radius: 10px;
             border: 1px solid var(--border);
-            padding: 14px 18px;
-            border-radius: 12px;
+            background: rgba(0,0,0,0.3);
             color: white;
-            font-size: 16px;
             outline: none;
         }
 
-        input[type="text"]:focus { border-color: var(--accent); }
-
-        .btn-primary {
-            background: var(--accent);
-            color: #000;
+        .auth-btn {
+            padding: 10px 14px;
+            border-radius: 10px;
             border: none;
-            padding: 14px 28px;
-            border-radius: 12px;
+            background: var(--accent);
+            color: black;
             font-weight: 700;
             cursor: pointer;
         }
 
-        /* DASHBOARD STATS */
-        .dashboard-card {
+        /* DASHBOARD */
+        .dashboard {
             display: flex;
             justify-content: space-between;
             align-items: center;
             background: var(--glass);
             border: 1px solid var(--border);
             border-radius: 18px;
-            padding: 20px 25px;
-            margin-bottom: 40px;
+            padding: 18px 20px;
+            margin: 20px 0 30px;
+            backdrop-filter: blur(12px);
         }
 
-        .stats-row { display: flex; gap: 30px; }
-        .stat { display: flex; flex-direction: column; }
-        .label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
-        .value { font-size: 22px; font-weight: 800; font-family: 'JetBrains Mono'; }
+        .stats {
+            display: flex;
+            gap: 25px;
+        }
+
+        .stat .label {
+            font-size: 10px;
+            color: var(--muted);
+        }
+
+        .stat .value {
+            font-size: 18px;
+            font-weight: 800;
+            font-family: 'JetBrains Mono', monospace;
+        }
 
         .success { color: var(--success); }
         .error { color: var(--error); }
         .accent { color: var(--accent); }
 
-        /* NOTION STYLE PROFILE LINK */
-        .notion-card {
-            display: flex; align-items: center; gap: 15px;
-            padding: 12px 20px; border-radius: 14px;
-            border: 1px solid var(--border); background: rgba(255,255,255,0.03);
-            text-decoration: none; color: var(--text);
+        /* FILTERS */
+        .filters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
         }
-        .notion-card:hover { border-color: var(--accent); background: rgba(56, 189, 248, 0.1); transform: translateX(5px); }
 
-        /* QUESTIONS GRID */
-        .questions-grid {
+        .filters a {
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: var(--glass);
+            color: var(--text);
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        /* QUESTIONS */
+        .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 12px;
         }
 
-        .question-card {
+        .card {
             background: var(--card-bg);
             border: 1px solid var(--border);
-            padding: 24px;
-            border-radius: 20px;
+            padding: 16px;
+            border-radius: 16px;
             text-decoration: none;
             color: inherit;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            height: 100%;
         }
 
-        .question-card:hover {
+        .card:hover {
             border-color: var(--accent);
-            transform: translateY(-5px);
-            background: rgba(255,255,255,0.05);
+            transform: translateY(-3px);
         }
 
-        .level-badge {
-            align-self: flex-start;
+        .badge {
             font-size: 10px;
-            font-weight: 700;
-            padding: 5px 10px;
-            border-radius: 8px;
-            background: rgba(56, 189, 248, 0.1);
-            color: var(--accent);
-            text-transform: uppercase;
-            margin-top: 15px;
+            padding: 4px 8px;
+            border-radius: 6px;
+            background: rgba(255,255,255,0.05);
+            display: inline-block;
+            margin-top: 10px;
         }
 
         /* SIDEBAR */
-        .ai-sidebar {
+        .sidebar {
             flex: 1;
-            max-width: 380px;
+            max-width: 400px;
             background: var(--sidebar-bg);
             border-left: 1px solid var(--border);
-            padding: 40px 30px;
+            padding: 30px;
             position: sticky;
             top: 0;
             height: 100vh;
         }
 
-        .ai-bubble {
+        .bubble {
             background: var(--glass);
-            border-left: 4px solid var(--accent);
-            padding: 20px;
+            border-left: 3px solid var(--accent);
+            padding: 15px;
             border-radius: 0 16px 16px 16px;
-            line-height: 1.5;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
 
         textarea {
             width: 100%;
-            min-height: 120px;
-            background: rgba(0,0,0,0.3);
+            min-height: 100px;
+            background: rgba(0,0,0,0.4);
             border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 15px;
+            border-radius: 12px;
+            padding: 12px;
             color: white;
-            font-family: inherit;
-            resize: none;
-            outline: none;
         }
-        textarea:focus { border-color: var(--accent); }
 
-        .btn-send {
+        .send {
             width: 100%;
-            background: var(--accent);
-            color: #000;
-            font-weight: 800;
+            margin-top: 10px;
+            padding: 12px;
+            border-radius: 12px;
             border: none;
-            padding: 16px;
-            border-radius: 14px;
-            margin-top: 15px;
+            background: var(--accent);
+            color: black;
+            font-weight: 700;
             cursor: pointer;
         }
-
-        /* FILTERS */
-        .filters { display: flex; gap: 12px; margin-bottom: 30px; }
-        .btn-filter {
-            padding: 8px 16px; border-radius: 10px;
-            border: 1px solid var(--border); background: var(--glass);
-            color: var(--muted); text-decoration: none; font-size: 14px;
-        }
-        .btn-filter:hover, .btn-filter.active { background: #fff; color: #000; border-color: #fff; }
-
     </style>
 </head>
 
 <body>
 
-<div class="page-wrapper">
+<div class="layout">
 
-    <main class="main-content">
+    <!-- MAIN -->
+    <main class="main">
+
         <h1>PyInterview AI</h1>
 
+        <!-- AUTH BLOCK -->
+        <div class="auth-box">
+
+            {% if not username %}
+            <form method="POST" action="{% url 'set_user' %}" class="auth-form">
+                {% csrf_token %}
+
+                <input type="text" name="username" placeholder="Enter your name" class="auth-input" required>
+
+                <button type="submit" class="auth-btn">Save</button>
+            </form>
+            {% else %}
+                <div>
+                    Logged in as <b style="color: white;">{{ username }}</b>
+                </div>
+            {% endif %}
+
+        </div>
+
         {% if username %}
-            <!-- ВІДОБРАЖАЄТЬСЯ, ЯКЩО КОРИСТУВАЧ УВІЙШОВ -->
-            <div class="dashboard-card">
-                <div class="stats-row">
-                    <div class="stat">
-                        <div class="label">Correct</div>
-                        <div class="value success">{{ user_score.correct|default:0 }}</div>
-                    </div>
-                    <div class="stat">
-                        <div class="label">Wrong</div>
-                        <div class="value error">{{ user_score.wrong|default:0 }}</div>
-                    </div>
-                    <div class="stat">
-                        <div class="label">Total</div>
-                        <div class="value accent">{{ total_answered|default:0 }}</div>
+
+        <!-- DASHBOARD -->
+        {% if user_score %}
+        <div class="dashboard">
+
+            <div class="stats">
+
+                <div class="stat">
+                    <div class="label">Correct</div>
+                    <div class="value success">{{ user_score.correct }}</div>
+                </div>
+
+                <div class="stat">
+                    <div class="label">Wrong</div>
+                    <div class="value error">{{ user_score.wrong }}</div>
+                </div>
+
+                <div class="stat">
+                    <div class="label">Total</div>
+                    <div class="value accent">
+                        {{ user_score.correct|add:user_score.wrong }}
                     </div>
                 </div>
 
-                <a href="{% url 'profile' %}" class="notion-card">
-                    <span style="font-size: 24px;">📊</span>
-                    <div style="display: flex; flex-direction: column;">
-                        <span style="font-weight: 700; font-size: 14px;">My Stats</span>
-                        <span style="color: var(--muted); font-size: 11px;">View history</span>
-                    </div>
-                    <span style="color: var(--accent);">→</span>
-                </a>
             </div>
 
-            <div class="filters">
-                <a class="btn-filter active" href="/">All Questions</a>
-                <a class="btn-filter" href="/level/junior/">Junior</a>
-                <a class="btn-filter" href="/level/mid/">Mid</a>
-                <a class="btn-filter" href="/level/senior/">Senior</a>
-            </div>
+        </div>
+        {% endif %}
 
-            <div class="questions-grid">
-                {% for q in questions %}
-                <a href="/question/{{ q.id }}/" class="question-card">
-                    <div style="font-size: 16px; font-weight: 600; line-height: 1.4;">{{ q.text }}</div>
-                    <div class="level-badge">{{ q.level }}</div>
-                </a>
-                {% empty %}
-                <p style="color: var(--muted);">No questions found in database. Add some via Admin!</p>
-                {% endfor %}
-            </div>
+        <!-- FILTERS -->
+        <div class="filters">
+            <a href="/">All</a>
+            <a href="/level/junior/">Junior</a>
+            <a href="/level/mid/">Mid</a>
+            <a href="/level/senior/">Senior</a>
+        </div>
+
+        <!-- QUESTIONS -->
+        <div class="grid">
+            {% for q in questions %}
+            <a href="/question/{{ q.id }}/" class="card">
+                <div>{{ q.text }}</div>
+                <div class="badge">{{ q.level }}</div>
+            </a>
+            {% endfor %}
+        </div>
 
         {% else %}
-            <!-- ВІДОБРАЖАЄТЬСЯ, ЯКЩО ТРЕБА ВВЕСТИ ІМ'Я -->
-            <div class="login-box">
-                <h2 style="margin-top: 0;">Welcome, Developer!</h2>
-                <p style="color: var(--muted); line-height: 1.6;">Enter your name to start the AI-powered interview practice. We will track your progress and provide personalized feedback.</p>
-
-                <form action="{% url 'login' %}" method="POST" class="input-group">
-                    {% csrf_token %}
-                    <input type="text" name="username" placeholder="Enter your name..." required autofocus>
-                    <button type="submit" class="btn-primary">Get Started</button>
-                </form>
-            </div>
+            <p style="color: var(--muted);">Please sign in to start practicing.</p>
         {% endif %}
+
     </main>
 
-    <aside class="ai-sidebar">
-        <h3 style="margin-top: 0; margin-bottom: 25px; display: flex; align-items: center; gap: 10px;">
-            <span style="color: var(--accent);">✦</span> AI Mentor
-        </h3>
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
 
-        <div class="ai-bubble" id="chat-bubble">
+        <h3>AI Mentor</h3>
+
+        <div class="bubble">
             {% if username %}
-                Hello <b>{{ username }}</b>! I'm your AI mentor. Choose a question or ask me anything about Python.
+                Welcome back, {{ username }}!
             {% else %}
-                Please enter your name to unlock the AI Mentor features.
+                Sign in to use AI mentor.
             {% endif %}
         </div>
 
         {% if username %}
-        <textarea id="ai-input" placeholder="Type your question here..."></textarea>
-        <button class="btn-send" onclick="sendChat()">Analyze & Ask</button>
+        <textarea id="answer" placeholder="Ask AI..."></textarea>
+        <button class="send" onclick="sendChat()">Analyze</button>
         {% endif %}
+
     </aside>
 
 </div>
 
 <script>
 async function sendChat() {
-    const input = document.getElementById("ai-input");
-    const bubble = document.getElementById("chat-bubble");
-    const message = input.value.trim();
-
+    const message = document.getElementById("answer").value;
     if (!message) return;
 
-    bubble.innerHTML = "<i>AI is thinking...</i>";
-    input.value = "";
+    const res = await fetch("/ai-chat/", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "X-CSRFToken": "{{ csrf_token }}"
+        },
+        body: new URLSearchParams({ message })
+    });
 
-    try {
-        const res = await fetch("/ai-chat/", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-                "X-CSRFToken": "{{ csrf_token }}"
-            },
-            body: new URLSearchParams({ message })
-        });
+    const data = await res.json();
 
-        const data = await res.json();
-        bubble.innerHTML = `<b>AI:</b><br>${data.response}`;
-    } catch (e) {
-        bubble.innerHTML = "<span style='color: var(--error);'>Error connecting to AI.</span>";
-    }
+    document.querySelector(".bubble").innerHTML =
+        `<b>AI:</b><br>${data.response || data.reply || ""}<br><small>${data.tip || ""}</small>`;
 }
 </script>
 
