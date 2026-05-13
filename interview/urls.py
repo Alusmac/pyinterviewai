@@ -8,4 +8,5 @@ urlpatterns = [
     path('level/<str:level>/', views.questions_by_level, name='questions_by_level'),
     path('set-user/', views.set_user, name='set_user'),
     path('ai-chat/', views.ai_chat, name='ai_chat'),
+    path('profile/', views.profile_view, name='profile'),
 ]

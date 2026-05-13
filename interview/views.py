@@ -12,9 +12,9 @@ from .ai_chat import get_ai_chat
 
 
 def home(request: HttpRequest) -> HttpResponse:
-    """ Головна сторінка """
+    """ home view
+     """
     username = request.session.get("username")
-    # Використовуємо 'junior' як рівень за замовчуванням
     questions = Question.objects.filter(level="junior")
 
     user_score = None
@@ -30,7 +30,8 @@ def home(request: HttpRequest) -> HttpResponse:
 
 
 def questions_by_level(request: HttpRequest, level: str) -> HttpResponse:
-    """ Фільтрація питань за рівнем (URL: /level/junior/ тощо) """
+    """ filter for level  (URL: /level/junior/ )
+    """
     username = request.session.get("username")
     questions = Question.objects.filter(level=level)
 
@@ -47,7 +48,8 @@ def questions_by_level(request: HttpRequest, level: str) -> HttpResponse:
 
 
 def question_view(request: HttpRequest, id: int) -> HttpResponse:
-    """ Сторінка питання з редактором та таймером """
+    """ Question page with an editor and a timer
+     """
     question = get_object_or_404(Question, id=id)
     return render(request, "question.html", {
         "question": question,
@@ -56,7 +58,8 @@ def question_view(request: HttpRequest, id: int) -> HttpResponse:
 
 
 def result(request: HttpRequest) -> HttpResponse:
-    """ Обробка відповіді від AI та запис в історію """
+    """  Processing the AI's response and saving it to the history
+    """
     if request.method == "POST":
         question_id = request.POST.get("question_id")
         answer = request.POST.get("answer", "")
@@ -65,15 +68,12 @@ def result(request: HttpRequest) -> HttpResponse:
         question = get_object_or_404(Question, id=question_id)
         result_data = get_ai_feedback(question.text, answer)
 
-        # Отримуємо score та перетворюємо в ціле число
         score = int(result_data.get("score", 0))
         is_correct = score >= 7
 
         if username:
-            # Оновлюємо загальну статку (правильно/неправильно)
             update_score(username, is_correct)
 
-            # Зберігаємо кожну спробу для графіка прогресу
             InterviewAttempt.objects.create(
                 username=username,
                 question=question,
@@ -91,12 +91,12 @@ def result(request: HttpRequest) -> HttpResponse:
 
 
 def profile_view(request: HttpRequest) -> HttpResponse:
-    """ Сторінка статистики та прогресу """
+    """profile view
+    """
     username = request.session.get("username")
     if not username:
         return redirect("home")
 
-    # Середній бал за останні 7 днів для графіка
     last_week = timezone.now() - timedelta(days=7)
     stats_query = (
         InterviewAttempt.objects.filter(username=username, date__gte=last_week)
@@ -123,7 +123,8 @@ def profile_view(request: HttpRequest) -> HttpResponse:
 
 
 def set_user(request: HttpRequest) -> HttpResponse:
-    """ Встановлення імені користувача в сесію """
+    """set username
+    """
     if request.method == "POST":
         username = request.POST.get("username")
         if username:
@@ -133,7 +134,8 @@ def set_user(request: HttpRequest) -> HttpResponse:
 
 
 def update_score(username: str, is_correct: bool):
-    """ Допоміжна функція оновлення статистики """
+    """update score
+     """
     user, _ = UserScore.objects.get_or_create(username=username)
     if is_correct:
         user.correct += 1
@@ -143,7 +145,8 @@ def update_score(username: str, is_correct: bool):
 
 
 def ai_chat(request: HttpRequest) -> HttpResponse:
-    """ Чат з AI-асистентом """
+    """ Chat with AI
+    """
     if request.method == "POST":
         try:
             data = json.loads(request.body)

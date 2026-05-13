@@ -1,8 +1,10 @@
 from django.db import models
 from django.utils import timezone
 
+
 class Question(models.Model):
-    """Таблиця питань"""
+    """questions table
+    """
     LEVEL_CHOICES = [
         ("junior", "Junior"),
         ("mid", "Mid"),
@@ -17,8 +19,9 @@ class Question(models.Model):
 
 
 class UserScore(models.Model):
-    """Загальна статистика користувача"""
-    username = models.CharField(max_length=50, unique=True) # Додано unique=True для надійності
+    """user scores table
+    """
+    username = models.CharField(max_length=50, unique=True)  # Додано unique=True для надійності
     correct = models.IntegerField(default=0)
     wrong = models.IntegerField(default=0)
 
@@ -37,10 +40,11 @@ class UserScore(models.Model):
 
 
 class InterviewAttempt(models.Model):
-    """Історія кожної відповіді для побудови графіка прогресу"""
+    """The history of each response for creating a progress chart
+    """
     username = models.CharField(max_length=50)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    score = models.IntegerField() # Бал від 0 до 10 від ШІ
+    score = models.IntegerField()
     date = models.DateTimeField(default=timezone.now)
 
     def __str__(self):

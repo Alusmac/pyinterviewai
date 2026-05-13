@@ -45,10 +45,7 @@
             overflow-y: auto;
         }
 
-        /* Кнопка Повернення */
-        .nav-header {
-            margin-bottom: 20px;
-        }
+        .nav-header { margin-bottom: 20px; }
 
         .btn-back {
             text-decoration: none;
@@ -62,9 +59,7 @@
             padding: 8px 0;
         }
 
-        .btn-back:hover {
-            color: var(--accent);
-        }
+        .btn-back:hover { color: var(--accent); }
 
         .timer-box {
             background: rgba(255, 193, 7, 0.1);
@@ -91,9 +86,7 @@
             transition: border-color 0.2s;
         }
 
-        .editor-container:focus-within {
-            border-color: var(--accent);
-        }
+        .editor-container:focus-within { border-color: var(--accent); }
 
         textarea#user-answer {
             flex-grow: 1;
@@ -182,9 +175,8 @@
 
 <div class="page-wrapper">
     <main class="workspace">
-        <!-- КНОПКА BACK TO DASHBOARD -->
         <div class="nav-header">
-            <a href="/dashboard/" class="btn-back">
+            <a href="{% url 'home' %}" class="btn-back">
                 <span>←</span> Back to Dashboard
             </a>
         </div>
@@ -198,7 +190,7 @@
         </div>
 
         <div class="controls-row">
-            <button id="voice-trigger" class="voice-btn" title="Голосовий ввід">🎤</button>
+            <button id="voice-trigger" class="voice-btn" title="Voice input">🎤</button>
             <button class="btn-submit" id="submit-btn" onclick="submitAnswer()">
                 <span>Submit Answer</span>
                 <span id="submit-icon">➜</span>
@@ -216,18 +208,25 @@
 
 <script>
 window.onload = function () {
-    // --- Таймер ---
+    // --- Timer + auto stop mic ---
     let timerDisplay = document.getElementById('timer-val');
     let timeLeft = parseInt("{{ timer }}") || 60;
+
     const interval = setInterval(() => {
         timeLeft--;
         timerDisplay.textContent = timeLeft;
-        if (timeLeft <= 0) { clearInterval(interval); submitAnswer(); }
+
+        if (timeLeft <= 0) {
+            clearInterval(interval);
+            stopMic(); // 🔥 stop recording when time ends
+            submitAnswer();
+        }
     }, 1000);
 
-    // --- Голосовий ввід ---
+    // --- Voice Input ---
     const micBtn = document.getElementById('voice-trigger');
     const area = document.getElementById('user-answer');
+
     const Speech = window.SpeechRecognition || window.webkitSpeechRecognition;
 
     if (!Speech) {
@@ -236,7 +235,7 @@ window.onload = function () {
     }
 
     const recognition = new Speech();
-    recognition.lang = "uk-UA";
+    recognition.lang = "en-US"; // 🔥 important for interviews
     recognition.continuous = true;
     recognition.interimResults = true;
 
@@ -254,14 +253,16 @@ window.onload = function () {
     };
 
     function startMic() {
-        active = true; isManualStop = false;
+        active = true;
+        isManualStop = false;
         recognition.start();
         micBtn.classList.add("recording-active");
         micBtn.innerText = "🛑";
     }
 
     function stopMic() {
-        active = false; isManualStop = true;
+        active = false;
+        isManualStop = true;
         recognition.stop();
         micBtn.classList.remove("recording-active");
         micBtn.innerText = "🎤";
@@ -269,21 +270,32 @@ window.onload = function () {
 
     recognition.onresult = (e) => {
         let interimTranscript = "";
+
         for (let i = e.resultIndex; i < e.results.length; i++) {
             let transcript = e.results[i][0].transcript;
+
             if (e.results[i].isFinal) {
-                if (finalTranscript !== "" && !finalTranscript.endsWith(" ")) finalTranscript += " ";
+                if (finalTranscript !== "" && !finalTranscript.endsWith(" ")) {
+                    finalTranscript += " ";
+                }
                 finalTranscript += transcript;
             } else {
                 interimTranscript += transcript;
             }
         }
+
         area.value = finalTranscript + interimTranscript;
         area.scrollTop = area.scrollHeight;
     };
 
-    recognition.onend = () => { if (active && !isManualStop) recognition.start(); };
+    recognition.onend = () => {
+        if (active && !isManualStop) recognition.start();
+    };
+
     recognition.onerror = () => stopMic();
+
+    // make stopMic доступною глобально для таймера
+    window.stopMic = stopMic;
 };
 
 async function submitAnswer() {
@@ -306,7 +318,9 @@ async function submitAnswer() {
             headers: { "X-CSRFToken": "{{ csrf_token }}" },
             body: formData
         });
+
         const data = await response.json();
+
         feedbackArea.innerHTML = `
             <div class="ai-card">
                 <h1 style="color:var(--accent); margin-top:0">${data.score}/10</h1>

@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PyInterview AI | Dashboard</title>
 
-    <!-- Шрифти: Inter для інтерфейсу та JetBrains Mono для коду -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
 
@@ -18,23 +17,21 @@
             --text: #f9fafb;
             --muted: #9ca3af;
             --accent: #38bdf8;
-            --accent-glow: rgba(56, 189, 248, 0.3);
             --success: #10b981;
             --error: #ef4444;
             --glass: rgba(255, 255, 255, 0.03);
         }
 
-        * { box-sizing: border-box; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+        * {
+            box-sizing: border-box;
+            transition: all 0.2s ease;
+        }
 
         body {
             margin: 0;
             font-family: 'Inter', sans-serif;
             background: var(--bg);
-            background-image:
-                radial-gradient(circle at 0% 0%, rgba(56, 189, 248, 0.08) 0%, transparent 40%),
-                radial-gradient(circle at 100% 100%, rgba(79, 70, 229, 0.08) 0%, transparent 40%);
             color: var(--text);
-            overflow-x: hidden;
         }
 
         .page-wrapper {
@@ -44,7 +41,7 @@
             min-height: 100vh;
         }
 
-        /* --- ГОЛОВНИЙ КОНТЕНТ --- */
+        /* MAIN */
         .main-content {
             flex: 2;
             padding: 40px 50px;
@@ -53,92 +50,147 @@
         h1 {
             font-size: 2.2rem;
             font-weight: 800;
-            letter-spacing: -1px;
-            margin-bottom: 30px;
-            background: linear-gradient(to bottom right, #fff 40%, var(--accent));
+            background: linear-gradient(to right, #fff, var(--accent));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
         }
 
-        /* --- ДАШБОРД ПРОГРЕСУ --- */
-        .score-dashboard {
+        /* ================= DASHBOARD ================= */
+        .dashboard-card {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 30px;
+
             background: var(--glass);
-            backdrop-filter: blur(12px);
             border: 1px solid var(--border);
-            padding: 25px;
-            border-radius: 24px;
-            margin-bottom: 35px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            border-radius: 18px;
+
+            padding: 18px 20px;
+            margin: 20px 0 30px 0;
+
+            backdrop-filter: blur(12px);
         }
 
-        .progress-ring {
-            position: relative;
-            width: 100px;
-            height: 100px;
-            flex-shrink: 0;
+        .dashboard-title {
+            font-size: 11px;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
         }
 
-        .progress-ring svg { transform: rotate(-90deg); width: 100px; height: 100px; }
-        .progress-ring circle { fill: none; stroke-width: 8; stroke-linecap: round; }
-        .progress-ring .bg { stroke: rgba(255, 255, 255, 0.05); }
-        .progress-ring .fill {
-            stroke: var(--accent);
-            stroke-dasharray: 251.3; /* 2 * PI * 40 */
-            filter: drop-shadow(0 0 6px var(--accent-glow));
+        .stats-row {
+            display: flex;
+            gap: 25px;
         }
 
-        .percentage {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
+        .stat {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .label {
+            font-size: 10px;
+            color: var(--muted);
+            text-transform: uppercase;
+        }
+
+        .value {
             font-size: 18px;
             font-weight: 800;
+            font-family: 'JetBrains Mono', monospace;
         }
 
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            width: 100%;
-        }
+        .success { color: var(--success); }
+        .error { color: var(--error); }
+        .accent { color: var(--accent); }
 
-        .stat-card {
-            background: rgba(0,0,0,0.2);
-            padding: 15px;
-            border-radius: 16px;
+        /* ================= NOTION CARD BUTTON ================= */
+        .notion-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 12px;
+            padding: 12px 14px;
+
+            border-radius: 14px;
             border: 1px solid var(--border);
-            text-align: center;
+            background: rgba(255,255,255,0.03);
+
+            text-decoration: none;
+            color: var(--text);
+
+            width: 250px;
         }
 
-        .stat-card small { display: block; color: var(--muted); font-size: 9px; text-transform: uppercase; margin-bottom: 2px; }
-        .stat-card span { font-family: 'JetBrains Mono', monospace; font-size: 1.2rem; font-weight: 700; }
+        .notion-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent);
+            background: rgba(56, 189, 248, 0.08);
+        }
 
-        /* --- ФІЛЬТРИ --- */
+        .notion-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: rgba(56, 189, 248, 0.15);
+        }
+
+        .notion-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .notion-title {
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .notion-subtitle {
+            font-size: 11px;
+            color: var(--muted);
+        }
+
+        .notion-arrow {
+            color: var(--muted);
+        }
+
+        .notion-card:hover .notion-arrow {
+            color: var(--accent);
+            transform: translateX(3px);
+        }
+
+        /* FILTERS */
         .filters {
             display: flex;
             gap: 10px;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
         .btn-filter {
-            padding: 10px 20px;
-            border-radius: 12px;
+            padding: 10px 14px;
+            border-radius: 10px;
             border: 1px solid var(--border);
             background: var(--glass);
             color: var(--text);
-            cursor: pointer;
-            font-size: 13px;
             text-decoration: none;
-            font-weight: 500;
+            font-size: 13px;
         }
 
-        .btn-filter:hover { background: white; color: black; }
-        .btn-active { background: var(--accent); color: black; border: none; box-shadow: 0 4px 12px var(--accent-glow); }
+        .btn-filter:hover {
+            background: white;
+            color: black;
+        }
 
-        /* --- КОМПАКТНА СІТКА ПИТАНЬ --- */
+        /* QUESTIONS */
         .questions-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -150,74 +202,41 @@
             border: 1px solid var(--border);
             padding: 16px;
             border-radius: 16px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            min-height: 100px;
             text-decoration: none;
             color: inherit;
         }
 
         .question-card:hover {
             border-color: var(--accent);
-            background: rgba(255,255,255,0.05);
             transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-        }
-
-        .question-text {
-            font-size: 14px;
-            font-weight: 500;
-            line-height: 1.4;
-            margin-bottom: 10px;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
         }
 
         .level-badge {
-            align-self: flex-start;
-            font-size: 9px;
-            padding: 3px 8px;
+            font-size: 10px;
+            padding: 4px 8px;
             border-radius: 6px;
-            text-transform: uppercase;
-            font-weight: 700;
             background: rgba(255,255,255,0.05);
-            color: var(--muted);
-            border: 1px solid var(--border);
+            margin-top: 10px;
+            display: inline-block;
         }
 
-        .junior { color: #4ade80; border-color: rgba(74, 222, 128, 0.2); }
-        .mid { color: #fbbf24; border-color: rgba(251, 191, 36, 0.2); }
-        .senior { color: #f87171; border-color: rgba(248, 113, 113, 0.2); }
-
-        /* --- AI SIDEBAR --- */
+        /* SIDEBAR */
         .ai-sidebar {
             flex: 1;
             max-width: 400px;
             background: var(--sidebar-bg);
-            backdrop-filter: blur(30px);
             border-left: 1px solid var(--border);
-            padding: 35px;
+            padding: 30px;
             position: sticky;
             top: 0;
             height: 100vh;
-            display: flex;
-            flex-direction: column;
         }
 
-        .chat-header { display: flex; align-items: center; gap: 10px; margin-bottom: 25px; }
-        .ai-dot { width: 8px; height: 8px; background: var(--success); border-radius: 50%; box-shadow: 0 0 10px var(--success); }
-
-        .chat-display { flex-grow: 1; overflow-y: auto; margin-bottom: 20px; }
         .ai-bubble {
             background: var(--glass);
             border-left: 3px solid var(--accent);
             padding: 15px;
             border-radius: 0 16px 16px 16px;
-            font-size: 14px;
-            line-height: 1.6;
         }
 
         textarea {
@@ -225,88 +244,84 @@
             min-height: 100px;
             background: rgba(0,0,0,0.4);
             border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 15px;
+            border-radius: 12px;
+            padding: 12px;
             color: white;
-            resize: none;
-            margin-bottom: 12px;
-            font-family: inherit;
-            outline: none;
+            margin-top: 10px;
         }
-        textarea:focus { border-color: var(--accent); }
 
         .btn-send {
             width: 100%;
             background: var(--accent);
-            color: #000;
+            color: black;
             font-weight: 700;
             border: none;
-            padding: 14px;
-            border-radius: 14px;
-            cursor: pointer;
+            padding: 12px;
+            border-radius: 12px;
+            margin-top: 10px;
         }
 
-        /* Welcome form */
-        .login-card {
-            text-align: center;
-            background: var(--glass);
-            padding: 40px;
-            border-radius: 30px;
-            border: 1px solid var(--border);
-        }
     </style>
 </head>
+
 <body>
 
 <div class="page-wrapper">
+
+    <!-- MAIN -->
     <main class="main-content">
+
         <h1>PyInterview AI</h1>
 
-        {% if not username %}
-        <div class="login-card">
-            <h2 style="margin-top: 0;">Master the Python Interview</h2>
-            <p style="color: var(--muted); margin-bottom: 25px;">Start your training session with our AI mentor.</p>
-            <form method="POST" action="/set-user/">
-                {% csrf_token %}
-                <input type="text" name="username" placeholder="Your Name" required
-                       style="padding: 12px 15px; border-radius: 10px; border: 1px solid var(--border); background: #000; color: white; margin-right: 10px;">
-                <button class="btn-filter btn-active" type="submit">Begin Session</button>
-            </form>
-        </div>
-        {% else %}
+        {% if username %}
 
-        <!-- COMPACT DASHBOARD -->
+        <!-- DASHBOARD -->
         {% if user_score %}
-        <div class="score-dashboard">
-            <div class="progress-ring">
-                <svg>
-                    <circle class="bg" cx="50" cy="50" r="40"></circle>
-                    {% with total=user_score.correct|add:user_score.wrong %}
-                    {% widthratio user_score.correct total 100 as percent %}
-                    <circle class="fill" cx="50" cy="50" r="40"
-                            style="stroke-dashoffset: calc(251.3 - (251.3 * {{ percent|default:0 }}) / 100);"></circle>
-                    <div class="percentage">{{ percent|default:0 }}%</div>
-                    {% endwith %}
-                </svg>
+        <div class="dashboard-card">
+
+            <div>
+                <div class="dashboard-title">Your Progress</div>
+
+                <div class="stats-row">
+
+                    <div class="stat">
+                        <div class="label">Correct</div>
+                        <div class="value success">{{ user_score.correct }}</div>
+                    </div>
+
+                    <div class="stat">
+                        <div class="label">Wrong</div>
+                        <div class="value error">{{ user_score.wrong }}</div>
+                    </div>
+
+                    <div class="stat">
+                        <div class="label">Total</div>
+                        <div class="value accent">
+                            {{ user_score.correct|add:user_score.wrong }}
+                        </div>
+                    </div>
+
+                </div>
             </div>
 
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <small>Correct</small>
-                    <span style="color: var(--success);">{{ user_score.correct }}</span>
+            <!-- NOTION STYLE BUTTON -->
+            <a href="{% url 'profile' %}" class="notion-card">
+
+                <div class="notion-icon">📊</div>
+
+                <div class="notion-content">
+                    <div class="notion-title">Performance Insights</div>
+                    <div class="notion-subtitle">Track your progress</div>
                 </div>
-                <div class="stat-card">
-                    <small>Mistakes</small>
-                    <span style="color: var(--error);">{{ user_score.wrong }}</span>
-                </div>
-                <div class="stat-card">
-                    <small>Exp</small>
-                    <span style="color: var(--accent);">{{ user_score.score }}</span>
-                </div>
-            </div>
+
+                <div class="notion-arrow">→</div>
+
+            </a>
+
         </div>
         {% endif %}
 
+        <!-- FILTERS -->
         <div class="filters">
             <a class="btn-filter" href="/">All</a>
             <a class="btn-filter" href="/level/junior/">Junior</a>
@@ -314,80 +329,62 @@
             <a class="btn-filter" href="/level/senior/">Senior</a>
         </div>
 
-        <!-- COMPACT GRID -->
+        <!-- QUESTIONS -->
         <div class="questions-grid">
             {% for q in questions %}
             <a href="/question/{{ q.id }}/" class="question-card">
-                <div class="question-text">{{ q.text }}</div>
-                <span class="level-badge {{ q.level|lower }}">{{ q.level }}</span>
+                <div>{{ q.text }}</div>
+                <div class="level-badge">{{ q.level }}</div>
             </a>
             {% endfor %}
         </div>
+
+        {% else %}
+        <p style="color: var(--muted);">Please sign in to start practicing.</p>
         {% endif %}
+
     </main>
 
-    <!-- AI ASIDE -->
+    <!-- SIDEBAR -->
     <aside class="ai-sidebar">
-        <div class="chat-header">
-            <div class="ai-dot"></div>
-            <h3 style="margin: 0; font-size: 1.1rem;">AI Mentor</h3>
-        </div>
 
-        <div class="chat-display" id="chat-display">
-            <div class="ai-bubble" id="ai-box">
-                {% if not username %}
-                Hello! Sign in to get personalized Python mentorship and code reviews.
-                {% else %}
-                Welcome back, <strong>{{ username }}</strong>! Ask me about Python concepts or paste your code for review.
-                {% endif %}
-            </div>
+        <h3>AI Mentor</h3>
+
+        <div class="ai-bubble">
+            {% if username %}
+                Welcome back, {{ username }}!
+            {% else %}
+                Sign in to use AI mentor.
+            {% endif %}
         </div>
 
         {% if username %}
-        <div class="input-container">
-            <textarea id="answer" placeholder="Paste your answer or ask a question..."></textarea>
-            <button class="btn-send" onclick="sendChat()" id="send-btn">Analyze with AI</button>
-        </div>
+        <textarea id="answer" placeholder="Ask AI..."></textarea>
+        <button class="btn-send" onclick="sendChat()">Analyze</button>
         {% endif %}
+
     </aside>
+
 </div>
 
 <script>
 async function sendChat() {
-    const btn = document.getElementById("send-btn");
-    const box = document.getElementById("ai-box");
     const message = document.getElementById("answer").value;
+    if (!message) return;
 
-    if(!message) return;
+    const res = await fetch("/ai-chat/", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "X-CSRFToken": "{{ csrf_token }}"
+        },
+        body: new URLSearchParams({ message })
+    });
 
-    btn.innerText = "Thinking...";
-    btn.disabled = true;
+    const data = await res.json();
 
-    try {
-        const res = await fetch("/ai-chat/", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-                "X-CSRFToken": "{{ csrf_token }}"
-            },
-            body: new URLSearchParams({ message })
-        });
-
-        const data = await res.json();
-        box.innerHTML = `
-            <div style="color: var(--accent); font-weight: 700; margin-bottom: 5px;">AI Mentor:</div>
-            ${data.response}
-            <div style="margin-top: 12px; font-size: 12px; opacity: 0.7; border-top: 1px solid var(--border); padding-top: 8px;">
-                💡 <strong>Tip:</strong> ${data.tip || "Keep practicing!"}
-            </div>
-        `;
-        document.getElementById("answer").value = "";
-    } catch (e) {
-        box.innerText = "Connection lost. Please try again.";
-    } finally {
-        btn.innerText = "Analyze with AI";
-        btn.disabled = false;
-    }
+    document.querySelector(".ai-bubble").innerHTML =
+        `<b>AI:</b><br>${data.response}<br><small>${data.tip || ""}</small>`;
 }
 </script>
 

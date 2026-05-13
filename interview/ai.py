@@ -4,13 +4,12 @@ import json
 from openai import OpenAI
 from groq import Groq
 
-# Clients initialization
 openai_client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 groq_client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
+
 def build_prompt(question: str, answer: str) -> str:
-    """
-    Constructs an English-only prompt for the AI.
+    """prompt for the AI.
     Includes instructions for analyzing technical accuracy and speech confidence.
     """
     return f"""
@@ -40,9 +39,10 @@ Strict Rules:
 - ALWAYS include a correct code example in the Feedback section if the candidate's logic is flawed.
 """
 
+
 def parse_ai_response(text: str) -> dict:
     """Extracts all fields using robust regular expressions."""
-    # Using flags=re.IGNORECASE and re.DOTALL for safer parsing
+
     level_match = re.search(r"Level:\s*(.*)", text, re.IGNORECASE)
     score_match = re.search(r"Score:\s*(\d+)", text, re.IGNORECASE)
     feedback_match = re.search(r"Feedback:\s*(.*?)(?=Improvement:|$)", text, re.DOTALL | re.IGNORECASE)
@@ -56,6 +56,7 @@ def parse_ai_response(text: str) -> dict:
         "raw": text
     }
 
+
 def call_openai(question: str, answer: str) -> str:
     prompt = build_prompt(question, answer)
     response = openai_client.chat.completions.create(
@@ -65,6 +66,7 @@ def call_openai(question: str, answer: str) -> str:
     )
     return response.choices[0].message.content
 
+
 def call_groq(question: str, answer: str) -> str:
     prompt = build_prompt(question, answer)
     response = groq_client.chat.completions.create(
@@ -72,6 +74,7 @@ def call_groq(question: str, answer: str) -> str:
         messages=[{"role": "user", "content": prompt}]
     )
     return response.choices[0].message.content
+
 
 def get_ai_feedback(question: str, answer: str) -> dict:
     """Main entry point for getting feedback with fallback logic."""
@@ -93,10 +96,11 @@ def get_ai_feedback(question: str, answer: str) -> dict:
 
     return parse_ai_response(response)
 
+
 def get_ai_chat(message: str) -> dict:
     """Generic chat helper for the AI Mentor assistant."""
     try:
-        # Using Groq for faster chat responses
+
         response = groq_client.chat.completions.create(
             model="llama-3.3-70b-versatile",
             messages=[
